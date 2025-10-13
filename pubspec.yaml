@@ -1,0 +1,37 @@
+name: swin
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  onnxruntime: 1.4.1
+  image: ^4.5.4
+  flutter_bloc: ^9.1.1
+  flutter_svg: ^2.2.1
+  image_picker: ^1.2.0
+  rxdart: ^0.28.0
+  shimmer_animation: ^2.2.2
+  get_it: ^8.2.0
+  path_provider: ^2.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/models/
+    - assets/images/

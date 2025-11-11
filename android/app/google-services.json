@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "999481722155",
+    "project_id": "swin-55203",
+    "storage_bucket": "swin-55203.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999481722155:android:add031acc589c47a8b316e",
+        "android_client_info": {
+          "package_name": "com.vuha14.swin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7rGOSlgz28nLs_SiFnCTcGprlOEBUph8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

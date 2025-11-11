@@ -10,7 +10,7 @@ import 'package:swin/models/ai_model.dart';
 import 'package:swin/onnx_predictor.dart';
 import 'package:swin/repository/model_repository.dart';
 
-import '../../constants/base_status.dart';
+import '../../../constants/base_status.dart';
 
 part 'prediction_event.dart';
 part 'prediction_state.dart';
@@ -77,13 +77,13 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
     emit(state.copyWith(status: BaseStatus.loading));
     try {
       // Load model bytes trong main isolate (nhanh)
-      final rawBytes = await rootBundle.load(state.selectedModel.path);
+      final rawBytes = await rootBundle.load(state.selectedModel?.path ?? "");
       final modelBytes = rawBytes.buffer.asUint8List();
 
       final Map<String, dynamic> data = {
         'input': state.input!,
         'modelBytes': modelBytes,
-        'classNames': state.selectedModel.classNames,
+        'classNames': state.selectedModel?.classNames ?? [],
       };
 
       // Chạy trong isolate — init + predict
@@ -92,7 +92,7 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
         data,
       );
 
-      final className = state.selectedModel.classNames[result];
+      final className = state.selectedModel?.classNames[result];
       emit(state.copyWith(
         status: BaseStatus.success,
         prediction: className,

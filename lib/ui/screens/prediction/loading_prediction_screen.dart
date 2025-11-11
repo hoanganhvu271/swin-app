@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:swin/ui/blocs/prediction_bloc.dart';
-import 'package:swin/ui/screens/result_screen.dart';
+import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
+import 'package:swin/ui/screens/prediction/result_screen.dart';
 
-import '../../constants/base_status.dart';
-import '../../constants/text_dimensions.dart';
+import '../../../constants/base_status.dart';
+import '../../../constants/text_dimensions.dart';
 
 class LoadingPredictionScreen extends StatelessWidget {
   final File image;
@@ -90,7 +90,7 @@ class LoadingPredictionScreen extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "Swin is running...",
+                      "Model is running...",
                       style: TextDimensions.titleBold22,
                     ),
                   ],

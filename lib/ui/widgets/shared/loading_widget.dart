@@ -1,10 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/colors_lib.dart';
-import '../../constants/core_ui_text_dimensions.dart';
+import '../../../constants/colors_lib.dart';
+import '../../../constants/core_ui_text_dimensions.dart';
 
 part 'loading_indicator.dart';
 

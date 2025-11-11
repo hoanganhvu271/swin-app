@@ -2,9 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:swin/ui/blocs/prediction_bloc.dart';
-import 'package:swin/ui/widgets/swin_top_bar.dart';
-import '../../constants/text_dimensions.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swin/constants/colors_lib.dart';
+import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
+import '../../../constants/text_dimensions.dart';
+import '../../../repository/mock_data.dart';
+import '../../widgets/shared/swin_top_bar.dart';
 
 class ResultScreen extends StatefulWidget {
   final File image;
@@ -113,20 +117,31 @@ class _ResultScreenState extends State<ResultScreen>
                         child: BlocBuilder<PredictionBloc, PredictionState>(
                           builder: (context, state) {
                             return Column(
+                              spacing: 12,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   state.prediction ?? "Unknown",
-                                  style: TextDimensions.bodyBold15
-                                      .copyWith(color: Colors.black, fontSize: 17),
+                                  style: TextDimensions.bodyBold15.copyWith(color: Colors.black, fontSize: 17),
                                 ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  "Confidence: 95%",
-                                  style: TextDimensions.footnote13.copyWith(
-                                    color: Colors.green.shade700,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  spacing: 4,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_checked.svg",
+                                      width: 16, height: 16,
+                                      colorFilter: ColorFilter.mode(ColorsLib.greenMain, BlendMode.srcIn),
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        "Classified by ${state.selectedModel?.name ?? "Model"}",
+                                        style: TextDimensions.footnote13.copyWith(
+                                          color: Colors.green.shade700,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             );
@@ -137,59 +152,12 @@ class _ResultScreenState extends State<ResultScreen>
                   ),
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              /// Thông tin chi tiết
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Text(
-                  "This leaf shows early signs of *Abcyz* disease. "
-                      "To treat, consider applying a mild fungicide and ensuring adequate sunlight exposure. "
-                      "Regular inspection and proper watering can help prevent future infections.",
-                  style: TextDimensions.footnote13.copyWith(
-                    color: Colors.grey.shade800,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              /// Gợi ý thêm hình ảnh tương tự
+              const SizedBox(height: 10),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
                   children: [
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
-                      child: Text(
-                        "Similar Cases",
-                        style: TextDimensions.bodyBold15
-                            .copyWith(color: Colors.black),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        separatorBuilder: (_, __) => const SizedBox(width: 12),
-                        itemBuilder: (context, index) => ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            "assets/images/img_leaf_${index + 1}.png",
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
+                    Html(data: MockData.alantomaDecandra)
+                  ]
                 ),
               ),
             ],

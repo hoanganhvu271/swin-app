@@ -6,14 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swin/constants/colors_lib.dart';
 import 'package:swin/constants/text_dimensions.dart';
-import 'package:swin/ui/blocs/prediction_bloc.dart';
-import 'package:swin/ui/screens/loading_prediction_screen.dart';
-import 'package:swin/ui/screens/model_list_screen.dart';
-import 'package:swin/ui/widgets/button_filled.dart';
-import 'package:swin/ui/widgets/selectable_image.dart';
-import 'package:swin/ui/widgets/swin_top_bar.dart';
+import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
+import 'package:swin/ui/screens/prediction/loading_prediction_screen.dart';
+import 'package:swin/ui/screens/prediction/model_list_screen.dart';
+import 'package:swin/ui/widgets/shared/button_filled.dart';
 
-import '../../constants/base_status.dart';
+import '../../../constants/base_status.dart';
+import '../../widgets/shared/selectable_image.dart';
+import '../../widgets/shared/swin_top_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -68,8 +68,8 @@ class _MainScreenState extends State<MainScreen> {
                                   child: Divider(height: 0.1, color: Colors.grey),
                                 ),
                                 ModelInfoWidget(
-                                  modelName: state.selectedModel.name,
-                                  modelDescription: state.selectedModel.description,
+                                  modelName: state.selectedModel?.name ?? "Select your model",
+                                  modelDescription: state.selectedModel?.description ?? "Diverse datasets from all over the world",
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(builder: (_) => BlocProvider.value(
@@ -158,6 +158,8 @@ class ModelInfoWidget extends StatelessWidget {
                     ),
                     Text(
                       modelDescription,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextDimensions.footnote13.copyWith(color: Colors.grey),
                     )
                   ],

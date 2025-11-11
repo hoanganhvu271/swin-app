@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../constants/colors_lib.dart';
-import '../../constants/core_ui_text_dimensions.dart';
+import '../../../constants/colors_lib.dart';
+import '../../../constants/core_ui_text_dimensions.dart';
 import 'loading_widget.dart';
 
 enum ButtonStatus { none, loading }

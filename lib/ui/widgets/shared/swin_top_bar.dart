@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../constants/colors_lib.dart';
-import '../../constants/text_dimensions.dart';
+import '../../../constants/colors_lib.dart';
+import '../../../constants/text_dimensions.dart';
 
 class SwinTopBar extends StatelessWidget {
   final String title;

@@ -15,14 +15,14 @@ import '../../../constants/base_status.dart';
 import '../../widgets/shared/selectable_image.dart';
 import '../../widgets/shared/swin_top_bar.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class PredictionScreen extends StatefulWidget {
+  const PredictionScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<PredictionScreen> createState() => _PredictionScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _PredictionScreenState extends State<PredictionScreen> {
   @override
   void initState() {
     super.initState();

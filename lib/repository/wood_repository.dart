@@ -1,34 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swin/models/wood_database.dart';
 import 'package:swin/models/wood_piece.dart';
 
 class WoodRepository {
-  Future<List<WoodDatabase>> getWoodDatabases() async {
-    await Future.delayed(Duration(seconds: 1));
+  final _firestore = FirebaseFirestore.instance;
 
-    return <WoodDatabase>[
-      WoodDatabase(
-        id: '1',
-        cover: 'assets/images/wood_db_oak.png',
-        title: 'Oak Database',
-        description: 'A comprehensive database of oak wood species.',
-        size: 10
-      ),
-    ];
+  Future<List<WoodDatabase>> getWoodDatabases() async {
+    final snapshot = await _firestore.collection('wood_database').get();
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      print("vuha12: $data");
+      return WoodDatabase(
+        id: data['id'] ?? doc.id,
+        cover: data['cover'] ?? '',
+        title: data['title'] ?? '',
+        description: data['description'] ?? '',
+        size: (data['size'] ?? 0) is int ? data['size'] : int.tryParse('${data['size']}') ?? 0,
+      );
+    }).toList();
   }
 
   Future<List<WoodPiece>> getWoodsList(int offset, int limit) async {
-    await Future.delayed(Duration(seconds: 1));
+    final snapshot = await _firestore
+        .collection('wood_piece')
+        .orderBy('id')
+        .limit(limit)
+        .get();
 
-    return <WoodPiece>[
-      WoodPiece(
-        id: "1",
-        images : [],
-        name: "Name",
-        description: "description",
-        origin: "origin",
-        properties: ["properties"],
-        relatedSpecies: ["relatedSpecies"]
-      )
-    ];
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      print(data);
+      return WoodPiece(
+        id: data['id'] ?? doc.id,
+        images: List<String>.from(data['images'] ?? []),
+        name: data['name'] ?? '',
+        description: data['description'] ?? '',
+        origin: data['origin'] ?? '',
+        properties: List<String>.from(data['properties'] ?? []),
+        relatedSpecies: List<String>.from(data['relatedSpecies'] ?? []),
+      );
+    }).toList();
   }
 }

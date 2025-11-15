@@ -26,3 +26,5 @@ plugins {
 }
 
 include(":app")
+include(":aandusb-release")
+include(":flutter-uvc-plugin-release")

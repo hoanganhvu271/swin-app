@@ -133,7 +133,7 @@ class CenterFabButton extends StatelessWidget {
             ),
           ],
           gradient: const LinearGradient(
-            colors: [Color(0xFFFFECEC), Color(0xFFCED2FF)],
+            colors: [Color(0xFFFFECEC), Color(0xFF325C2A)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

@@ -50,4 +50,8 @@ flutter {
 dependencies {
     // Thêm dòng này để bật hỗ trợ desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
+
+    implementation("com.serenegiant:common:9.8.2")
+    implementation(project(":aandusb-release"))
+    implementation(project(":flutter-uvc-plugin-release"))
 }

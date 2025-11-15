@@ -20,16 +20,19 @@ class WoodRepository {
     }).toList();
   }
 
-  Future<List<WoodPiece>> getWoodsList(int offset, int limit) async {
+  Future<List<WoodPiece>> getWoodsList(String databaseId, int offset, int limit,) async {
     final snapshot = await _firestore
         .collection('wood_piece')
-        .orderBy('id')
-        .limit(limit)
-        .get();
+        // .where('database_id', isEqualTo: databaseId)
+        .get(GetOptions(source: Source.server));
 
-    return snapshot.docs.map((doc) {
+
+    final docs = snapshot.docs;
+    print("vuha12: docs length = ${docs.length}");
+    return docs.map((doc) {
       final data = doc.data();
-      print(data);
+      print("vuha12: $data");
+
       return WoodPiece(
         id: data['id'] ?? doc.id,
         images: List<String>.from(data['images'] ?? []),

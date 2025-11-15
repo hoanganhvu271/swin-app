@@ -110,14 +110,20 @@ abstract class AppLocalizations {
   /// No description provided for @history.
   ///
   /// In vi, this message translates to:
-  /// **'Lich sử'**
+  /// **'Lịch sử'**
   String get history;
 
   /// No description provided for @more.
   ///
   /// In vi, this message translates to:
-  /// **'Thêm'**
+  /// **'Mở rộng'**
   String get more;
+
+  /// No description provided for @details.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết'**
+  String get details;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

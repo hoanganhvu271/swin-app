@@ -1,7 +1,7 @@
 class WoodEvent {}
 
 class GetWoodListEvent extends WoodEvent {
-  final String databaseIds;
+  final String databaseId;
 
-  GetWoodListEvent(this.databaseIds);
+  GetWoodListEvent(this.databaseId);
 }

@@ -18,20 +18,22 @@ class WoodBloc extends Bloc<WoodEvent, WoodState>{
     emit(state.copyWith(status: BaseStatus.loading));
 
     try {
-      final result = await repo.getWoodsList(state.offset, state.limit);
-      List<WoodPiece> currentList = List.from(state.woods);
-      
-      currentList.addAll(result);
-
-      state.copyWith(
-        status: BaseStatus.success,
-        woods: currentList,
-        offset: state.offset + state.limit,
+      final result = await repo.getWoodsList(
+        event.databaseId,
+        state.offset,
+        state.limit,
       );
+
+      emit(state.copyWith(
+        status: BaseStatus.success,
+        woods: result,
+        offset: state.offset + state.limit,
+      ));
     } catch (e) {
       emit(state.copyWith(
-        status: BaseStatus.failure,
+        status: BaseStatus.failure
       ));
     }
   }
 }
+

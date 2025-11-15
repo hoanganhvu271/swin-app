@@ -15,8 +15,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get library => 'Thư viện';
 
   @override
-  String get history => 'Lich sử';
+  String get history => 'Lịch sử';
 
   @override
-  String get more => 'Thêm';
+  String get more => 'Mở rộng';
+
+  @override
+  String get details => 'Chi tiết';
 }

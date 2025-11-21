@@ -30,9 +30,12 @@ dependencies:
   cloud_firestore: ^6.1.0
   permission_handler: ^12.0.1
   logger: ^2.5.0
+  carousel_slider: ^5.1.1
+  shared_preferences: ^2.5.3
   uvc_manager:
-    git:
-      url: https://github.com/saki4510t/UVC4Flutter.git
+    path: D:\PTIT\DoAn\UVC4Flutter
+#    git:
+#      url: https://github.com/saki4510t/UVC4Flutter.git
 
 dev_dependencies:
   flutter_test:

@@ -20,12 +20,35 @@ class WoodRepository {
     }).toList();
   }
 
+  Future<WoodPiece?> getWoodById(String id) async {
+    final cleanId = id.trim();
+
+    final doc = await _firestore
+        .collection('wood_piece')
+        .where('id', isEqualTo: cleanId)
+        .get(const GetOptions(source: Source.server));
+
+    final data = doc.docs.first.data();
+
+    return WoodPiece(
+      id: data['id'] ?? "",
+      images: List<String>.from(data['images'] ?? []),
+      name: data['name'] ?? '',
+      description: data['description'] ?? '',
+      origin: data['origin'] ?? '',
+      properties: List<String>.from(data['properties'] ?? []),
+      relatedSpecies: List<String>.from(data['relatedSpecies'] ?? []),
+    );
+  }
+
+
   Future<List<WoodPiece>> getWoodsList(String databaseId, int offset, int limit,) async {
     final snapshot = await _firestore
         .collection('wood_piece')
-        // .where('database_id', isEqualTo: databaseId)
+        .where('database_id', isEqualTo: databaseId.trim())
         .get(GetOptions(source: Source.server));
 
+    print("vuha12: $databaseId");
 
     final docs = snapshot.docs;
     print("vuha12: docs length = ${docs.length}");

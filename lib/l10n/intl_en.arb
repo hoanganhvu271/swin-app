@@ -1,7 +1,20 @@
 {
+    "app_name": "WoodSwin",
+    "app_name_subtitle": "Identify wood species with AI",
+
     "home": "Home",
     "library": "Library",
     "history": "History",
     "more": "More",
-    "details": "Details"
+    "details": "Details",
+
+    "predictions": "Predictions",
+    "settings": "Settings",
+    "connect_camera": "Connect to UVC camera",
+    "select_model": "Select model",
+    "select_model_description": "Choose an AI model to identify wood species",
+    "classify": "Classify",
+    "current_model": "Current Model",
+    "or_use_uvc_camera": "Or use UVC camera",
+    "confidence": "Confidence"
 }

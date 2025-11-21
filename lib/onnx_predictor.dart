@@ -14,7 +14,7 @@ class OnnxPredictor {
     _session = OrtSession.fromBuffer(bytes, options);
   }
 
-  Future<int> predict(Uint8List imageBytes) async {
+  Future<List<double>> predict(Uint8List imageBytes) async {
     // Decode ảnh
     final image = img.decodeImage(imageBytes)!;
     final resized = img.copyResize(image, width: 256, height: 256);
@@ -93,7 +93,8 @@ class OnnxPredictor {
       throw Exception('Unsupported output data type: ${raw.runtimeType}');
     }
 
-    return outputList.indexWhere((e) => e == outputList.reduce((a, b) => a > b ? a : b));
+    // return outputList.indexWhere((e) => e == outputList.reduce((a, b) => a > b ? a : b));
+    return outputList;
   }
 
   void close() {

@@ -5,7 +5,7 @@ class PredictionState {
   final List<AiModel> models;
   final  AiModel? selectedModel;
   final File? input;
-  final String? prediction;
+  final List<PredictionResult> predictions;
   final bool predicted;
   final String? errorMessage;
 
@@ -15,7 +15,7 @@ class PredictionState {
     this.selectedModel,
     this.input,
     this.predicted = false,
-    this.prediction,
+    this.predictions = const [],
     this.errorMessage,
   });
 
@@ -24,7 +24,7 @@ class PredictionState {
     List<AiModel>? models,
     AiModel? selectedModel,
     File? input,
-    String? prediction,
+    List<PredictionResult>? predictions,
     String? errorMessage,
     bool? predicted,
   }) {
@@ -33,7 +33,7 @@ class PredictionState {
       models: models ?? this.models,
       input: input ?? this.input,
       selectedModel: selectedModel ?? this.selectedModel,
-      prediction: prediction ?? this.prediction,
+      predictions: predictions ?? this.predictions,
       errorMessage: errorMessage ?? this.errorMessage,
       predicted: predicted ?? this.predicted,
     );

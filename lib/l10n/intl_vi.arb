@@ -1,7 +1,20 @@
 {
+    "app_name": "WoodSwin",
+    "app_name_subtitle": "Nhận diện loài gỗ với AI",
     "home": "Trang chủ",
     "library": "Thư viện",
     "history": "Lịch sử",
     "more": "Mở rộng",
-    "details": "Chi tiết"
+    "details": "Chi tiết",
+
+
+    "predictions": "Dự đoán",
+    "settings": "Cài đặt",
+    "connect_camera": "Kết nối với uvc camera",
+    "select_model": "Chọn mô hình",
+    "select_model_description": "Chọn mô hình AI để nhận diện loài gỗ",
+    "classify": "Phân loại",
+    "current_model": "Mô hình hiện tại",
+    "or_use_uvc_camera": "Hoặc sử dụng UVC camera",
+    "confidence": "Độ tin cậy"
 }

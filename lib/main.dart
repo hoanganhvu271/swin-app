@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/locators/swin_locators.dart';
-import 'package:swin/ui/screens/library/library_screen.dart';
 import 'package:swin/ui/screens/main/main_screen.dart';
-import 'package:swin/ui/screens/prediction/prediction_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -30,6 +30,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       color: Colors.white,
       debugShowCheckedModeBanner: false,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate
+      ],
       home: MainScreen(),
     );
   }

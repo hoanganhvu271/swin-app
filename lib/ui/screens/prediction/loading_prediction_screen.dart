@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
+import 'package:swin/ui/screens/prediction/result_detail_screen.dart';
 import 'package:swin/ui/screens/prediction/result_screen.dart';
 
 import '../../../constants/base_status.dart';
@@ -32,7 +33,7 @@ class LoadingPredictionScreen extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: context.read<PredictionBloc>(),
-                child: ResultScreen(image: image)
+                child: ResultScreen(image: image, predictions: state.predictions)
               ),
             ),
           );

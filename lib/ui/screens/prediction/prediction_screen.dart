@@ -1,19 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swin/constants/colors_lib.dart';
 import 'package:swin/constants/text_dimensions.dart';
+import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
 import 'package:swin/ui/screens/prediction/loading_prediction_screen.dart';
 import 'package:swin/ui/screens/prediction/model_list_screen.dart';
 import 'package:swin/ui/widgets/shared/button_filled.dart';
 
 import '../../../constants/base_status.dart';
+import '../../../l10n/generated/app_localizations_vi.dart';
 import '../../widgets/shared/selectable_image.dart';
 import '../../widgets/shared/swin_top_bar.dart';
+import '../uvc/uvc_screen.dart';
 
 class PredictionScreen extends StatefulWidget {
   const PredictionScreen({super.key});
@@ -30,6 +31,8 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context) ?? AppLocalizationsVi();
+
     return BlocProvider<PredictionBloc>(
       create: (context) => PredictionBloc(),
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -47,7 +50,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 return Column(
                   children: [
                     SwinTopBar(
-                      title: "Safe Forest",
+                      title: localization.predictions,
                       iconRightPath: "assets/icons/icon_setting.svg",
                       iconRightOnTap: () {}
                     ),
@@ -58,18 +61,36 @@ class _PredictionScreenState extends State<PredictionScreen> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
-                                SelectableImage(
-                                  onImageSelected: (image) {
-                                    context.read<PredictionBloc>().add(PredictionInputChanged(image));
+                                SelectableImage(),
+                                SizedBox(height: 24),
+                                GestureDetector(
+                                  onTap: () {
+                                    // Xử lý mở camera UVC
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => BlocProvider.value(
+                                          value: context.read<PredictionBloc>(),
+                                          child: UvcScreen(),
+                                        ),
+                                      ),
+                                    );
                                   },
+                                  child: Text(
+                                    localization.or_use_uvc_camera, // "hoặc sử dụng UVC Camera"
+                                    style: TextStyle(
+                                      color: ColorsLib.greenMain,
+                                      fontSize: 14,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 30),
                                   child: Divider(height: 0.1, color: Colors.grey),
                                 ),
                                 ModelInfoWidget(
-                                  modelName: state.selectedModel?.name ?? "Select your model",
-                                  modelDescription: state.selectedModel?.description ?? "Diverse datasets from all over the world",
+                                  modelName: state.selectedModel?.name ?? localization.select_model,
+                                  modelDescription: state.selectedModel?.description ?? localization.select_model_description,
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(builder: (_) => BlocProvider.value(
@@ -82,7 +103,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                                 SizedBox(height: 80),
                                 ButtonFilled(
                                   isDisable: state.status == BaseStatus.loading || state.input == null,
-                                  defaultLabel: "Classify",
+                                  defaultLabel: localization.classify,
                                   onTap: () {
                                     context.read<PredictionBloc>().add(PredictionRequested());
                                     Navigator.push(
@@ -110,7 +131,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         alignment: Alignment.bottomRight,
                         child: Image.asset("assets/images/img_tree.png")
                       ),
-                    )
+                    ),
                   ],
                 );
               }
@@ -136,11 +157,13 @@ class ModelInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context) ?? AppLocalizationsVi();
+
     return Column(
       spacing: 16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Current Model", style: TextDimensions.footnoteBold13.copyWith(color: ColorsLib.primary2950)),
+        Text(localization.current_model, style: TextDimensions.footnoteBold13.copyWith(color: ColorsLib.primary2950)),
         InkWell(
           onTap: () => onTap?.call(),
           child: Row(

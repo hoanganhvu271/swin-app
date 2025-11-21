@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver, Si
             children: [
               KeepAliveComponent(child: HomeScreen()),
               KeepAliveComponent(child: LibraryScreen()),
-              KeepAliveComponent(child: HistoryScreen()),
+              HistoryScreen(),
               KeepAliveComponent(child: MoreScreen()),
             ],
           ),

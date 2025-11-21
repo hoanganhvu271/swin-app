@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swin/ui/screens/uvc/uvc_manager_view.dart';
 
+import '../../../constants/text_dimensions.dart';
 import 'camera_permission_handler.dart';
 
 class UvcScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _UvcScreenState extends State<UvcScreen> {
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Test UVC Connect'),
+          title: Text("Kết nối", style: TextDimensions.titleBold20.copyWith(color: Colors.black)),
         ),
         body: Center(
           child: Column(

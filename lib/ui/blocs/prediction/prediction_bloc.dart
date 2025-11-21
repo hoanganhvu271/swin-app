@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -9,13 +10,15 @@ import 'dart:typed_data';
 import 'package:swin/models/ai_model.dart';
 import 'package:swin/onnx_predictor.dart';
 import 'package:swin/repository/model_repository.dart';
+import 'package:swin/utils/storage_utils.dart';
 
 import '../../../constants/base_status.dart';
+import '../../../models/prediction_result.dart';
 
 part 'prediction_event.dart';
 part 'prediction_state.dart';
 
-Future<int> _isolatedPredictionTask(Map<String, dynamic> data) async {
+Future<List<double>> _isolatedPredictionTask(Map<String, dynamic> data) async {
   final File input = data['input'] as File;
   final Uint8List modelBytes = data['modelBytes'] as Uint8List;
   final List<String> classNames = List<String>.from(data['classNames'] as List);
@@ -45,6 +48,7 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
     on<PredictionRequested>(_onPredictionRequested);
     on<PredictionReset>(_onPredictionReset);
     on<PredictionInputChanged>((event, emit) {
+      print("PredictionInputChanged event received with input: ${event.input.path}");
       emit(state.copyWith(input: event.input));
     });
     on<PredictionModelLoaded>(_onPredictionModelLoaded);
@@ -87,15 +91,48 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
       };
 
       // Chạy trong isolate — init + predict
-      final result = await compute<Map<String, dynamic>, int>(
+      final result = await compute<Map<String, dynamic>, List<double>>(
         _isolatedPredictionTask,
         data,
       );
 
-      final className = state.selectedModel?.classNames[result];
+      // Chuyển logits sang probability (softmax)
+      List<double> softmax(List<double> logits) {
+        // Tăng ổn định bằng cách trừ max(logit)
+        double maxLogit = logits.reduce(math.max);
+        List<double> exps = logits.map((x) => math.exp(x - maxLogit)).toList();
+        double sumExps = exps.reduce((a, b) => a + b);
+        return exps.map((x) => x / sumExps).toList();
+      }
+
+      List<double> probabilities = softmax(result);
+
+      // Xử lý kết quả
+      List<PredictionResult> predictions = <PredictionResult>[];
+
+      for (int i = 0; i < probabilities.length; i++) {
+        predictions.add(PredictionResult(
+          label: state.selectedModel?.classNames[i] ?? "Unknown",
+          index: i,
+          confidence: probabilities[i], // dùng probability thay vì logits
+        ));
+      }
+
+      // Sắp xếp theo confidence giảm dần
+      predictions.sort((a, b) => b.confidence.compareTo(a.confidence));
+
+      // History
+      await StorageUtils.addPrediction(
+        PredictionStorageObject(
+          imgPath: state.input!.path,
+          result: predictions,
+          timestamp: DateTime.now().toIso8601String(),
+        )
+      );
+
       emit(state.copyWith(
         status: BaseStatus.success,
-        prediction: className,
+        predictions: predictions,
         predicted: true,
       ));
     } catch (e, st) {

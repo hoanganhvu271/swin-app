@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swin/locators/swin_locators.dart';
-import 'package:swin/models/wood_piece.dart';
 import 'package:swin/ui/blocs/wood/wood_event.dart';
 import 'package:swin/ui/blocs/wood/wood_state.dart';
 

@@ -95,6 +95,18 @@ abstract class AppLocalizations {
     Locale('vi')
   ];
 
+  /// No description provided for @app_name.
+  ///
+  /// In vi, this message translates to:
+  /// **'WoodSwin'**
+  String get app_name;
+
+  /// No description provided for @app_name_subtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận diện loài gỗ với AI'**
+  String get app_name_subtitle;
+
   /// No description provided for @home.
   ///
   /// In vi, this message translates to:
@@ -124,6 +136,60 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chi tiết'**
   String get details;
+
+  /// No description provided for @predictions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dự đoán'**
+  String get predictions;
+
+  /// No description provided for @settings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cài đặt'**
+  String get settings;
+
+  /// No description provided for @connect_camera.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết nối với uvc camera'**
+  String get connect_camera;
+
+  /// No description provided for @select_model.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn mô hình'**
+  String get select_model;
+
+  /// No description provided for @select_model_description.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn mô hình AI để nhận diện loài gỗ'**
+  String get select_model_description;
+
+  /// No description provided for @classify.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân loại'**
+  String get classify;
+
+  /// No description provided for @current_model.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô hình hiện tại'**
+  String get current_model;
+
+  /// No description provided for @or_use_uvc_camera.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoặc sử dụng UVC camera'**
+  String get or_use_uvc_camera;
+
+  /// No description provided for @confidence.
+  ///
+  /// In vi, this message translates to:
+  /// **'Độ tin cậy'**
+  String get confidence;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -78,7 +78,7 @@ class LibraryScreen extends StatelessWidget {
                 WoodDatabaseBanner(
                   title: db.title,
                   description: db.description,
-                  imagePath: AssetsPath.imgVietNamWood,
+                  imagePath: db.image,
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => WoodListScreen(databaseId: db.id,)),
@@ -138,7 +138,7 @@ class WoodDatabaseBanner extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
+            Image.network(
               imagePath,
               height: 180,
               fit: BoxFit.fitWidth,

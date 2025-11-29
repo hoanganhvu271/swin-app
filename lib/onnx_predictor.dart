@@ -17,18 +17,18 @@ class OnnxPredictor {
   Future<List<double>> predict(Uint8List imageBytes) async {
     // Decode ảnh
     final image = img.decodeImage(imageBytes)!;
-    final resized = img.copyResize(image, width: 256, height: 256);
+    final resized = img.copyResize(image, width: 224, height: 224);
 
-    // Chuyển ảnh sang tensor (1, 3, 256, 256)
-    final input = Float32List(1 * 3 * 256 * 256);
+    // Chuyển ảnh sang tensor (1, 3, 224, 224)
+    final input = Float32List(1 * 3 * 224 * 224);
     int index = 0;
 
     const mean = [0.485, 0.456, 0.406];
     const std = [0.229, 0.224, 0.225];
 
     for (int c = 0; c < 3; c++) {
-      for (int y = 0; y < 256; y++) {
-        for (int x = 0; x < 256; x++) {
+      for (int y = 0; y < 224; y++) {
+        for (int x = 0; x < 224; x++) {
           final pixel = resized.getPixel(x, y); // img.Color
 
           double value;
@@ -41,18 +41,19 @@ class OnnxPredictor {
           }
 
           // Chuẩn hóa theo ImageNet
-          input[index++] = (value - mean[c]) / std[c];
+          // input[index++] = (value - mean[c]) / std[c];
+          input[index++] = value;
         }
       }
     }
 
     final inputTensor = OrtValueTensor.createTensorWithDataList(
       input,
-      [1, 3, 256, 256],
+      [1, 3, 224, 224],
     );
 
 
-    final inputs = {'input': inputTensor};
+    final inputs = {'images': inputTensor};
     final runOptions = OrtRunOptions();
     final dynamic asyncResults = await _session.runAsync(runOptions, inputs);
 
@@ -94,6 +95,7 @@ class OnnxPredictor {
     }
 
     // return outputList.indexWhere((e) => e == outputList.reduce((a, b) => a > b ? a : b));
+    print("vuha12: $outputList");
     return outputList;
   }
 

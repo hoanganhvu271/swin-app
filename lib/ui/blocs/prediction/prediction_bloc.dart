@@ -4,8 +4,10 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:swin/locators/swin_locators.dart';
 import 'dart:typed_data';
+import 'package:path/path.dart' as p;
 
 import 'package:swin/models/ai_model.dart';
 import 'package:swin/onnx_predictor.dart';
@@ -37,12 +39,9 @@ Future<List<double>> _isolatedPredictionTask(Map<String, dynamic> data) async {
   }
 }
 
-
 class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
-  // Bỏ đi late final OnnxPredictor _predictor; vì nó sẽ được khởi tạo trong Isolate
-  // Nếu bạn vẫn cần _predictor cho các tác vụ khác, hãy giữ lại nó,
-  // nhưng nó KHÔNG được dùng trong _onPredictionRequested.
-  late final OnnxPredictor _predictor = OnnxPredictor(); // Giữ lại cho initRuntimeRequested
+  late final OnnxPredictor _predictor = OnnxPredictor();
+  late final ModelRepository _modelRepository = swinLocator<ModelRepository>();
 
   PredictionBloc() : super(PredictionState()) {
     on<PredictionRequested>(_onPredictionRequested);
@@ -59,30 +58,43 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
   }
 
   void _predictionModelListFetched(PredictionModelListFetched event, Emitter<PredictionState> emit) async {
-    emit(state.copyWith(status: BaseStatus.loading));
-    try {
-      final models = swinLocator<ModelRepository>().getModelList();
-      emit(state.copyWith(status: BaseStatus.success, models: models));
-    } catch (e) {
-      emit(state.copyWith(status: BaseStatus.failure, errorMessage: e.toString()));
-    }
+    // emit(state.copyWith(status: BaseStatus.loading));
+    // try {
+    //   final models = swinLocator<ModelRepository>().getModelList();
+    //   emit(state.copyWith(status: BaseStatus.success, models: models));
+    // } catch (e) {
+    //   emit(state.copyWith(status: BaseStatus.failure, errorMessage: e.toString()));
+    // }
   }
 
   void _initRuntimeRequested(InitRuntimeRequested event, emit) async {
     emit(state.copyWith(status: BaseStatus.loading));
 
-    // Giả sử OnnxPredictor() chỉ khởi tạo OrtEnv, tác vụ này nhanh
-    // Nếu nó nặng, bạn cũng nên chuyển nó sang compute
-    // _predictor = OnnxPredictor(); // đã được khai báo ở trên
-    emit(state.copyWith(status: BaseStatus.success));
+    AiModel currentModel = await _modelRepository.getCurrentModel();
+    emit(state.copyWith(status: BaseStatus.success, selectedModel: currentModel));
+  }
+
+  Future<Uint8List> _loadModelBytes(String? localFileName) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final localPath = p.join(dir.path, localFileName ?? 'best.onnx');
+
+    final file = File(localPath);
+    if (await file.exists()) {
+      print("vuha12: Loading model from local path: $localPath");
+      return await file.readAsBytes();
+    } else {
+      print("vuha12: Loading model from assets");
+      final rawBytes = await rootBundle.load('assets/models/best.onnx');
+      final modelBytes = rawBytes.buffer.asUint8List();
+
+      return modelBytes;
+    }
   }
 
   void _onPredictionRequested(PredictionRequested event, Emitter<PredictionState> emit) async {
     emit(state.copyWith(status: BaseStatus.loading));
     try {
-      // Load model bytes trong main isolate (nhanh)
-      final rawBytes = await rootBundle.load(state.selectedModel?.path ?? "");
-      final modelBytes = rawBytes.buffer.asUint8List();
+      final modelBytes = await _loadModelBytes(state.selectedModel?.path);
 
       final Map<String, dynamic> data = {
         'input': state.input!,
@@ -96,25 +108,14 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
         data,
       );
 
-      // Chuyển logits sang probability (softmax)
-      List<double> softmax(List<double> logits) {
-        // Tăng ổn định bằng cách trừ max(logit)
-        double maxLogit = logits.reduce(math.max);
-        List<double> exps = logits.map((x) => math.exp(x - maxLogit)).toList();
-        double sumExps = exps.reduce((a, b) => a + b);
-        return exps.map((x) => x / sumExps).toList();
-      }
-
-      List<double> probabilities = softmax(result);
-
       // Xử lý kết quả
       List<PredictionResult> predictions = <PredictionResult>[];
 
-      for (int i = 0; i < probabilities.length; i++) {
+      for (int i = 0; i < result.length; i++) {
         predictions.add(PredictionResult(
           label: state.selectedModel?.classNames[i] ?? "Unknown",
           index: i,
-          confidence: probabilities[i], // dùng probability thay vì logits
+          confidence: result[i],
         ));
       }
 

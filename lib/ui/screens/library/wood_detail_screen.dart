@@ -4,7 +4,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/l10n/generated/app_localizations_vi.dart';
 import 'package:swin/models/wood_piece.dart';
-import '../../../repository/mock_data.dart';
 import '../../widgets/shared/swin_top_bar.dart';
 
 class WoodDetailScreen extends StatelessWidget {

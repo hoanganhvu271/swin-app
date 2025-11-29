@@ -15,6 +15,7 @@ class WoodRepository {
         cover: data['cover'] ?? '',
         title: data['title'] ?? '',
         description: data['description'] ?? '',
+        image: data['image'] ?? '',
         size: (data['size'] ?? 0) is int ? data['size'] : int.tryParse('${data['size']}') ?? 0,
       );
     }).toList();

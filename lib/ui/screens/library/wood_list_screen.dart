@@ -80,7 +80,7 @@ class _WoodListScreenState extends State<WoodListScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    onChanged: (_) => setState(() {}), // trigger rebuild để filter
+                    onChanged: (_) => setState(() {}),
                   ),
                 ),
 
@@ -215,8 +215,8 @@ class _ListItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                AssetsPath.imgTest,
+              child: Image.network(
+                wood.images.isNotEmpty ? wood.images[0] : '',
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,

@@ -8,13 +8,11 @@ import 'package:swin/constants/base_status.dart';
 import 'package:swin/constants/colors_lib.dart';
 import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/l10n/generated/app_localizations_vi.dart';
-import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
 import 'package:swin/ui/blocs/wood_detail/wood_detail_bloc.dart';
 import 'package:swin/ui/blocs/wood_detail/wood_detail_event.dart';
 import 'package:swin/ui/blocs/wood_detail/wood_detail_state.dart';
 import '../../../constants/text_dimensions.dart';
 import '../../../models/prediction_result.dart';
-import '../../../repository/mock_data.dart';
 import '../../widgets/shared/swin_top_bar.dart';
 
 class ResultDetailScreen extends StatefulWidget {

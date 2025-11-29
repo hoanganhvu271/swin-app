@@ -181,8 +181,8 @@ class _GridItem extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                AssetsPath.imgTest,
+              child: Image.network(
+                wood.images.isNotEmpty ? wood.images[0] : 'https://picsum.photos/200/300',
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),
@@ -216,7 +216,7 @@ class _ListItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                wood.images.isNotEmpty ? wood.images[0] : '',
+                wood.images.isNotEmpty ? wood.images[0] : 'https://picsum.photos/200/300',
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,

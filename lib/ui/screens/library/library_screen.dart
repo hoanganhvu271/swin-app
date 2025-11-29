@@ -139,7 +139,7 @@ class WoodDatabaseBanner extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              imagePath,
+              imagePath.isNotEmpty ? imagePath : 'https://picsum.photos/200/300',
               height: 180,
               fit: BoxFit.fitWidth,
               width: double.infinity,

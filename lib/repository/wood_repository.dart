@@ -33,7 +33,7 @@ class WoodRepository {
 
     return WoodPiece(
       id: data['id'] ?? "",
-      images: List<String>.from(data['images'] ?? []),
+      images: List<String>.from(data['image_urls'] ?? []),
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       origin: data['origin'] ?? '',
@@ -59,7 +59,7 @@ class WoodRepository {
 
       return WoodPiece(
         id: data['id'] ?? doc.id,
-        images: List<String>.from(data['images'] ?? []),
+        images: List<String>.from(data['image_urls'] ?? []),
         name: data['name'] ?? '',
         description: data['description'] ?? '',
         origin: data['origin'] ?? '',

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swin/constants/assets_path.dart';
 
 import 'package:swin/ui/screens/prediction/prediction_screen.dart';
+import 'package:swin/ui/widgets/shared/dialog_component.dart';
 
 import '../../../constants/base_status.dart';
 import '../../../core/main_tab.dart';
@@ -31,7 +33,6 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
 
-    // Khi mở app -> kiểm tra version ngay
     context.read<UpdateBloc>().add(CheckVersionEvent());
 
     tabController = TabController(length: MainTab.values.length, vsync: this);
@@ -99,22 +100,20 @@ class _MainScreenState extends State<MainScreen>
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: const Text("Model mới có sẵn"),
-        content: Text("Phiên bản mới model đã có. Bạn muốn cập nhật không?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Để sau"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.read<UpdateBloc>().add(DownloadModelEvent());
-            },
-            child: const Text("Cập nhật"),
-          )
-        ],
+      builder: (_) => DialogComponent(
+        closeIconSize: 20,
+        title: "Cập nhật mới",
+        widgetContent: SizedBox(
+          height: 200,
+          child: Image.asset(AssetsPath.imgDialog, fit: BoxFit.contain),
+        ),
+        buttonLabel: "Cập nhật",
+        buttonOnTap: () {
+          Navigator.pop(context);
+          context.read<UpdateBloc>().add(DownloadModelEvent());
+        },
+        subButtonOnTap: () => Navigator.pop(context),
+        subButtonLabel: "Để sau"
       ),
     );
   }

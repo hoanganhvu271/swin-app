@@ -13,6 +13,7 @@ abstract class AssetsPath {
   static const String iconSupport= 'assets/icons/icon_support.svg';
 
   static const String imgBook = 'assets/images/img_book.png';
+  static const String imgDialog = 'assets/images/img_dialog.png';
   static const String imgForestMask = 'assets/images/img_forest_mask.png';
   static const String imgLeaf = 'assets/images/img_leaf.png';
   static const String imgLeaf5 = 'assets/images/img_leaf_5.png';
@@ -22,4 +23,5 @@ abstract class AssetsPath {
   static const String imgTree = 'assets/images/img_tree.png';
   static const String imgVietNamWood = 'assets/images/img_vietnam_wood.jpg';
   static const String imgWoodBanner= 'assets/images/img_wood_banner.png';
+  static const String imgSwinChop= 'assets/images/img_swin_chop.png';
 }

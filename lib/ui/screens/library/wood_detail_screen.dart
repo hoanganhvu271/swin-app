@@ -1,6 +1,9 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:swin/constants/text_dimensions.dart';
 import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/l10n/generated/app_localizations_vi.dart';
 import 'package:swin/models/wood_piece.dart';
@@ -36,8 +39,57 @@ class WoodDetailScreen extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    Html(data: piece.description)
-                  ]
+                    if (piece.images.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                "Hinh ảnh về ${piece.name}",
+                                textAlign: TextAlign.center,
+                                style: TextDimensions.bodyBold17
+                              ),
+                            ),
+                            CarouselSlider(
+                              items: piece.images
+                                  .take(3)
+                                  .map(
+                                    (image) => ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    image,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                    errorBuilder: (_, __, ___) => const Icon(
+                                      Icons.broken_image,
+                                      size: 48,
+                                    ),
+                                  ),
+                                ),
+                              )
+                                  .toList(),
+                              options: CarouselOptions(
+                                height: 220,
+                                autoPlay: piece.images.length > 1,
+                                enlargeCenterPage: true,
+                                viewportFraction: 0.8,
+                                enableInfiniteScroll: piece.images.length > 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    Html(data: piece.description),
+                  ],
                 ),
               ),
             ],

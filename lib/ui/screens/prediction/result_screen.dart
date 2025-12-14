@@ -161,8 +161,6 @@ class _PredictionItemState extends State<PredictionItem> with SingleTickerProvid
         child: baseContainer,
       );
     }
-
-    // Item isBest với border gradient chuyển động
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -198,10 +196,10 @@ class _PredictionItemState extends State<PredictionItem> with SingleTickerProvid
 
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.all(2), // độ dày viền
+          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             gradient: gradient,
-            borderRadius: BorderRadius.circular(14), // radius + padding
+            borderRadius: BorderRadius.circular(14),
           ),
           child: InkWell(
             borderRadius: BorderRadius.circular(12),

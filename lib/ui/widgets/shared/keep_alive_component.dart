@@ -1,13 +1,3 @@
-/*
-* Copyright (C) Viettel Cyber Security, Inc - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
-*
-* LƯU Ý: TÀI LIỆU NÀY THUỘC QUYỀN SỞ HỮU CỦA VIETTEL CYBER SECURITY
-* NGHIÊM CẤM SAO CHÉP, IN ẤN HOẶC SỬ DỤNG DƯỚI BẤT CỨ HÌNH THỨC NÀO NẾU KHÔNG ĐƯỢC SỰ CHẤP THUẬN TỪ PHÍA VIETTEL CYBER SECURITY
-* MỌI HÀNH VI VI PHẠM ĐỀU PHẢI CHỊU TRÁCH NHIỆM TRƯỚC PHÁP LUẬT
-*/
-
 import 'package:flutter/material.dart';
 
 /// Widget giúp giữ trạng thái [state] của widget [child]

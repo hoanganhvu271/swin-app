@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:swin/constants/colors_lib.dart';
 
 class BannerSlider extends StatefulWidget {
-  final List<Widget> items; // 👈 đổi từ String sang Widget
+  final List<Widget> items;
 
   const BannerSlider({
     super.key,
@@ -22,7 +22,6 @@ class _BannerSliderState extends State<BannerSlider> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Slider
         CarouselSlider.builder(
           carouselController: _controller,
           itemCount: widget.items.length,
@@ -56,7 +55,6 @@ class _BannerSliderState extends State<BannerSlider> {
 
         const SizedBox(height: 12),
 
-        // Dots indicator
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: widget.items.asMap().entries.map((entry) {

@@ -30,7 +30,6 @@ class LibraryScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ---------- TITLE ----------
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     child: Text(
@@ -40,8 +39,6 @@ class LibraryScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // ---------- BODY ----------
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),

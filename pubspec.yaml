@@ -35,6 +35,8 @@ dependencies:
   dio: ^5.9.0
   chopper: ^8.4.0
   http: ^1.6.0
+  url_launcher: ^6.3.2
+  syncfusion_flutter_pdfviewer: ^31.1.19
   uvc_manager:
     path: D:\PTIT\DoAn\UVC4Flutter
 #    git:
@@ -53,3 +55,4 @@ flutter:
     - assets/icons/
     - assets/models/
     - assets/images/
+    - assets/pdfs/

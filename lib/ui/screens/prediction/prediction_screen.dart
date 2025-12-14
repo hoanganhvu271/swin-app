@@ -65,7 +65,6 @@ class _PredictionScreenState extends State<PredictionScreen> {
                                 SizedBox(height: 24),
                                 GestureDetector(
                                   onTap: () {
-                                    // Xử lý mở camera UVC
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => BlocProvider.value(
@@ -76,7 +75,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                                     );
                                   },
                                   child: Text(
-                                    localization.or_use_uvc_camera, // "hoặc sử dụng UVC Camera"
+                                    localization.or_use_uvc_camera,
                                     style: TextStyle(
                                       color: ColorsLib.greenMain,
                                       fontSize: 14,

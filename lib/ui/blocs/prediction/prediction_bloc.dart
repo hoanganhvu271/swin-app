@@ -28,7 +28,6 @@ Future<List<double>> _isolatedPredictionTask(Map<String, dynamic> data) async {
   final OnnxPredictor isolatedPredictor = OnnxPredictor();
 
   try {
-    // Khởi tạo model trong isolate — nặng, nhưng không ảnh hưởng UI
     await isolatedPredictor.initModelFromBytes(modelBytes);
 
     final isolatedBytes = await input.readAsBytes();

@@ -75,8 +75,6 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
                 iconRightOnTap: () {},
               ),
               const SizedBox(height: 12),
-
-              /// Card chứa ảnh và thông tin dự đoán
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {

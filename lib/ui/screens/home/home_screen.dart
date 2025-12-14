@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swin/constants/text_dimensions.dart';
 import 'package:swin/ui/screens/prediction/prediction_screen.dart';
@@ -9,10 +8,8 @@ import 'package:swin/ui/widgets/shared/button_filled.dart';
 
 import '../../../constants/assets_path.dart';
 import '../../../constants/colors_lib.dart';
-import '../../../core/main_tab.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../l10n/generated/app_localizations_vi.dart';
-import '../main/bottom_navigation.dart';
 import '../uvc/uvc_screen.dart';
 import 'banner1.dart';
 import 'banner2.dart';
@@ -103,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                         BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                           child: Container(
-                            color: Colors.black.withOpacity(1), // có thể điều chỉnh opacity
+                            color: Colors.black.withOpacity(1),
                           ),
                         ),
                         Padding(

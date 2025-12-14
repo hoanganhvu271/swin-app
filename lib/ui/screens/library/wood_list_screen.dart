@@ -57,14 +57,11 @@ class _WoodListScreenState extends State<WoodListScreen> {
           child: SafeArea(
             child: Column(
               children: [
-                // ---------------- TOP BAR ----------------
                 SwinTopBar(
                   title: "Danh sách gỗ",
                   iconRightPath: "assets/icons/icon_setting.svg",
                   iconRightOnTap: () {},
                 ),
-
-                // ---------------- SEARCH BAR ----------------
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
                   child: TextField(
@@ -83,8 +80,6 @@ class _WoodListScreenState extends State<WoodListScreen> {
                     onChanged: (_) => setState(() {}),
                   ),
                 ),
-
-                // ---------------- SWITCH VIEW BUTTON ----------------
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Align(
@@ -100,8 +95,6 @@ class _WoodListScreenState extends State<WoodListScreen> {
                     ),
                   ),
                 ),
-
-                // ---------------- LIST / GRID VIEW ----------------
                 Expanded(
                   child: BlocBuilder<WoodBloc, WoodState>(
                     builder: (context, state) {
@@ -110,8 +103,6 @@ class _WoodListScreenState extends State<WoodListScreen> {
                       } else if (state.status == BaseStatus.failure) {
                         return const Center(child: Text("Lấy dữ liệu thất bại"));
                       }
-
-                      // Filter theo search text
                       final List<WoodPiece> filtered = state.woods.where((e) {
                         return e.name
                             .toLowerCase()
@@ -122,7 +113,6 @@ class _WoodListScreenState extends State<WoodListScreen> {
                         valueListenable: isGridView,
                         builder: (_, grid, __) {
                           if (grid) {
-                            // ------- GRID VIEW -------
                             return GridView.builder(
                               padding: const EdgeInsets.all(16),
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -140,7 +130,6 @@ class _WoodListScreenState extends State<WoodListScreen> {
                               ),
                             );
                           } else {
-                            // ------- LIST VIEW -------
                             return ListView.builder(
                               padding: const EdgeInsets.all(16),
                               itemCount: filtered.length,

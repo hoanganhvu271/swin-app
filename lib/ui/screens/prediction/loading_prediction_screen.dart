@@ -53,7 +53,7 @@ class LoadingPredictionScreen extends StatelessWidget {
           child: SafeArea(
             child: Center(
               child: SizedBox(
-                width: 400, // 🔹 tăng khung chứa (ảnh 300 + khoảng trôi lá)
+                width: 400,
                 height: 400,
                 child: Column(
                   spacing: 50,
@@ -62,7 +62,6 @@ class LoadingPredictionScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       clipBehavior: Clip.none,
                       children: [
-                        // 🔹 Các lá bay quanh ảnh
                         for (int i = 0; i < 20; i++)
                           _AnimatedLeaf(
                             imagePath: leafImagePaths[i % leafImagePaths.length],
@@ -71,8 +70,6 @@ class LoadingPredictionScreen extends StatelessWidget {
                             size: 35 + Random().nextDouble() * 30,
                             duration: Duration(seconds: 4 + Random().nextInt(3)),
                           ),
-
-                        // 🔹 Ảnh trung tâm có shimmer
                         SizedBox(
                           width: 300,
                           height: 300,
@@ -148,7 +145,7 @@ class _AnimatedLeafState extends State<_AnimatedLeaf>
       builder: (context, child) {
         final angle = _rotationAnim.value;
         final radius = widget.radius;
-        final center = const Offset(200, 200); // 🔹 Stack center (400x400)
+        final center = const Offset(200, 200);
         final offset = Offset(
           cos(angle) * radius,
           sin(angle) * radius,

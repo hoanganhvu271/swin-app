@@ -44,14 +44,6 @@
             </intent-filter>
         </activity>
 
-<!--        &lt;!&ndash; ⚠️ Bạn đang thiếu phần receiver này: &ndash;&gt;-->
-<!--        <receiver android:name="com.serenegiant.usb.USBMonitor$UsbDeviceReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />-->
-<!--                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

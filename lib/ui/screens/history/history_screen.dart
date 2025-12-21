@@ -121,7 +121,9 @@ class HistoryScreen extends StatelessWidget {
                                               : Text('Không có prediction', style: TextDimensions.footnote13),
                                     ),
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.read<HistoryBloc>().add(RemoveHistoryItem(item.timestamp));
+                                      },
                                       child: SvgPicture.asset(AssetsPath.iconDelete, width: 24, height: 24)
                                     )
                                   ],

@@ -45,14 +45,6 @@ class WoodDetailScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Text(
-                                "Hinh ảnh về ${piece.name}",
-                                textAlign: TextAlign.center,
-                                style: TextDimensions.bodyBold17
-                              ),
-                            ),
                             CarouselSlider(
                               items: piece.images
                                   .take(3)

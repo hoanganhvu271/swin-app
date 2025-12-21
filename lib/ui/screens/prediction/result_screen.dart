@@ -190,7 +190,7 @@ class _PredictionItemState extends State<PredictionItem> with SingleTickerProvid
             0.40,
             0.45,
             0.5
-          ], // dải màu dài, mượt, không gap
+          ],
           transform: GradientRotation(_controller.value * 2 * 3.1416),
         );
 

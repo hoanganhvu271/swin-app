@@ -76,4 +76,16 @@ class StorageUtils {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_key);
   }
+
+  static Future<void> removePredictionByTimestamp(String timestamp) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> historyJson = prefs.getStringList(_key) ?? [];
+
+    historyJson.removeWhere((str) {
+      final map = jsonDecode(str);
+      return map['timestamp'] == timestamp;
+    });
+
+    await prefs.setStringList(_key, historyJson);
+  }
 }

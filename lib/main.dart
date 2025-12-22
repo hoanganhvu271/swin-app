@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +21,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
+
+  // Dart errors
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  // Async / platform errors
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   initSwinLocator();
   runApp(MyApp());

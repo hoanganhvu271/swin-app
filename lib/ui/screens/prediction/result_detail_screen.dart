@@ -158,19 +158,22 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: ListView(
-                  children: [
-                    BlocBuilder<WoodDetailBloc, WoodDetailState>(
-                      builder: (context, state) {
-                        if (state.status == BaseStatus.loading) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (state.status == BaseStatus.failure) {
-                          return Center(child: Text("Error: ${state.error}"));
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView(
+                    children: [
+                      BlocBuilder<WoodDetailBloc, WoodDetailState>(
+                        builder: (context, state) {
+                          if (state.status == BaseStatus.loading) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (state.status == BaseStatus.failure) {
+                            return Center(child: Text("Error: ${state.error}"));
+                          }
+                          return Html(data: state.woodPiece?.description ?? "");
                         }
-                        return Html(data: state.woodPiece?.description ?? "");
-                      }
-                    )
-                  ]
+                      )
+                    ]
+                  ),
                 ),
               ),
             ],

@@ -80,7 +80,10 @@ class WoodDetailScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    Html(data: piece.description),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Html(data: piece.description),
+                    ),
                   ],
                 ),
               ),

@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:uvc_manager/uvc_manager.dart';
+
 import 'package:swin/constants/colors_lib.dart';
 import 'package:swin/ui/blocs/prediction/prediction_bloc.dart';
 import 'package:swin/ui/widgets/shared/button_filled.dart';
 import 'package:swin/ui/widgets/shared/dialog_component.dart';
-import 'package:uvc_manager/uvc_manager.dart';
-import 'package:path/path.dart' as p;
 
 class UVCManagerView extends StatefulWidget {
   final int frameType;
@@ -26,54 +29,102 @@ class UVCManagerView extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _UVCManagerViewState();
+  State<UVCManagerView> createState() => _UVCManagerViewState();
 }
 
 class _UVCManagerViewState extends State<UVCManagerView> {
   late VoidCallback _listener;
-  int _deviceCount = 0;
+
+  UVCControllerInterface? _controller;
+
   int _deviceId = 0;
+  int _deviceCount = 0;
 
-  _UVCManagerViewState() {
-    _deviceCount = 0;
-    _listener = () {
-      final int newDeviceCount = UVCManagerPlatform.instance.getAvailableCount();
-      final connected = (newDeviceCount > 0);
-      keepScreenOn(connected);
-
-      if (_deviceCount != newDeviceCount) {
-        setState(() {
-          _deviceCount = newDeviceCount;
-          _deviceId = connected ? UVCManagerPlatform.instance.getControllerAt(0).deviceId : 0;
-        });
-      }
-    };
-  }
+  bool _cameraReady = false;
+  int _videoKeySeed = 0;
 
   @override
   void initState() {
     super.initState();
+
+    _listener = _onDeviceChanged;
     UVCManagerPlatform.instance.addListener(_listener);
+
+    _onDeviceChanged(); // init ngay nếu đã cắm cam
+  }
+
+  void _onDeviceChanged() {
+    if (!mounted) return;
+
+    final newCount = UVCManagerPlatform.instance.getAvailableCount();
+    final connected = newCount > 0;
+
+    keepScreenOn(connected);
+
+    if (newCount == _deviceCount) return;
+
+    if (connected) {
+      _initCamera();
+    } else {
+      _disposeCamera();
+    }
+
+    setState(() {
+      _deviceCount = newCount;
+    });
+  }
+
+  void _initCamera() {
+    try {
+      final ctrl = UVCManagerPlatform.instance.getControllerAt(0);
+      _deviceId = ctrl.deviceId;
+      _controller = UVCManagerPlatform.instance.getController(_deviceId);
+
+      _cameraReady = true;
+      _videoKeySeed++; // force recreate texture
+
+      debugPrint('UVC camera init: deviceId=$_deviceId');
+    } catch (e) {
+      debugPrint('UVC init error: $e');
+      _cameraReady = false;
+    }
+  }
+
+  void _disposeCamera() {
+    try {
+      if (_cameraReady && _controller != null) {
+        _controller!.stop();
+        _controller!.releaseTexture();
+      }
+    } catch (e) {
+      debugPrint('UVC dispose error: $e');
+    }
+
+    _controller = null;
+    _deviceId = 0;
+    _cameraReady = false;
+    _videoKeySeed++;
+
+    debugPrint('UVC camera disposed');
   }
 
   @override
   void dispose() {
     UVCManagerPlatform.instance.removeListener(_listener);
+    _disposeCamera();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final videoViewKey = GlobalObjectKey<UVCVideoViewState>(context);
-
-    if (_deviceId == 0) {
+    if (!_cameraReady || _deviceId == 0) {
       return Container(
         color: Colors.black,
         alignment: Alignment.center,
         padding: const EdgeInsets.all(20),
         child: widget.noDeviceMessage ??
             const Text(
-              "No device connected",
+              'No device connected',
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
       );
@@ -81,24 +132,25 @@ class _UVCManagerViewState extends State<UVCManagerView> {
 
     return Stack(
       children: [
-        // Video container
         Center(
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.symmetric(vertical: BorderSide(color: Colors.white, width: 2)),
-              boxShadow: [
+              border: const Border.symmetric(
+                vertical: BorderSide(color: Colors.white, width: 2),
+              ),
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black45,
                   blurRadius: 8,
-                  offset: const Offset(0, 4),
+                  offset: Offset(0, 4),
                 ),
               ],
             ),
             clipBehavior: Clip.hardEdge,
             child: UVCVideoView(
-              key: videoViewKey,
+              key: ValueKey('uvc_video_$_videoKeySeed'),
               deviceId: _deviceId,
               frameType: widget.frameType,
               videoWidth: widget.videoWidth,
@@ -107,52 +159,65 @@ class _UVCManagerViewState extends State<UVCManagerView> {
             ),
           ),
         ),
-        // Controls overlay
+
         Positioned(
-          bottom: 20,
           left: 20,
           right: 20,
+          bottom: 20,
           child: UVCCtrlView(
-            deviceId: _deviceId,
-            onSelected: (size) {
-              if (size != null) {
-                videoViewKey.currentState?.setSize(size);
-              }
-            },
+            controller: _controller!,
+            onCameraError: _handleCameraError,
           ),
         ),
       ],
     );
   }
+
+  /// Khi capture fail / camera freeze → reset toàn bộ
+  void _handleCameraError(Object error) {
+    debugPrint('Camera error: $error');
+
+    _disposeCamera();
+
+    // thử init lại sau 300ms
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
+      if (UVCManagerPlatform.instance.getAvailableCount() > 0) {
+        setState(_initCamera);
+      }
+    });
+  }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                  CONTROL                                   */
+/* -------------------------------------------------------------------------- */
+
 class UVCCtrlView extends StatefulWidget {
-  final int deviceId;
-  final ValueChanged<VideoSize?>? onSelected;
+  final UVCControllerInterface controller;
+  final ValueChanged<Object> onCameraError;
 
   const UVCCtrlView({
     super.key,
-    required this.deviceId,
-    required this.onSelected,
+    required this.controller,
+    required this.onCameraError,
   });
 
   @override
-  State<StatefulWidget> createState() => _UVCCtrlViewState();
+  State<UVCCtrlView> createState() => _UVCCtrlViewState();
 }
 
 class _UVCCtrlViewState extends State<UVCCtrlView> {
-  late UVCControllerInterface _controller;
-  List<VideoSize> _supportedSize = <VideoSize>[];
+  List<VideoSize> _supportedSizes = [];
 
   @override
   void initState() {
     super.initState();
-    _controller = UVCManagerPlatform.instance.getController(widget.deviceId);
-    _controller.getSupportedSize().then(
-          (supported) => setState(() {
-        _supportedSize = supported;
-      }),
-    );
+
+    widget.controller.getSupportedSize().then((sizes) {
+      if (!mounted) return;
+      setState(() => _supportedSizes = sizes);
+    }).catchError(widget.onCameraError);
   }
 
   @override
@@ -164,92 +229,78 @@ class _UVCCtrlViewState extends State<UVCCtrlView> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_supportedSize.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: DropdownMenu<VideoSize>(
-                label: const Text(
-                  'Supported video size',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                width: double.infinity,
-                menuHeight: 150,
-                menuStyle: MenuStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                textStyle: const TextStyle(color: Colors.white, fontSize: 14),
-                onSelected: (VideoSize? size) {
-                  if (size != null) widget.onSelected?.call(size);
-                },
-                dropdownMenuEntries: _supportedSize.map((size) {
-                  return DropdownMenuEntry<VideoSize>(
-                      value: size,
-                      label: size.toShortString(),
-                      style: ButtonStyle(textStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white)))
-                  );
-                }).toList(),
+          if (_supportedSizes.isNotEmpty)
+            DropdownMenu<VideoSize>(
+              label: const Text(
+                'Supported video size',
+                style: TextStyle(color: Colors.white),
               ),
+              textStyle: const TextStyle(color: Colors.white),
+              onSelected: (size) {
+                if (size != null) {
+                  widget.controller.setSize(size.frameType, size.width, size.height);
+                }
+              },
+              dropdownMenuEntries: _supportedSizes
+                  .map(
+                    (s) => DropdownMenuEntry(
+                  value: s,
+                  label: s.toShortString(),
+                ),
+              )
+                  .toList(),
             ),
+          const SizedBox(height: 8),
           ButtonFilled(
-            defaultLabel: "Capture",
-            onTap: () => onCapturePressed(_controller),
+            defaultLabel: 'Capture',
             backgroundColor: ColorsLib.greenMain,
+            onTap: _onCapture,
           ),
         ],
       ),
     );
   }
 
-  void onCapturePressed(UVCControllerInterface controller) async {
+  Future<void> _onCapture() async {
     try {
-      final directory = await getExternalStorageDirectory();
-      if (directory == null) return;
+      final dir = await getExternalStorageDirectory();
+      if (dir == null) return;
 
-      final filePath = p.join(
-        directory.path,
-        "uvc_capture_tmp.jpg",
-      );
+      final path = p.join(dir.path, 'uvc_capture_tmp.jpg');
 
-      final saved = await controller.capture(filePath);
+      final file = File(path);
+
+      if (await file.exists()) {
+        await file.delete();
+      }
+
+      final saved = await widget.controller
+          .capture(path)
+          .timeout(const Duration(seconds: 3));
+
+      if (!mounted) return;
 
       showDialog(
         context: context,
         builder: (ctx) => DialogComponent(
-            title: "Captured Image",
-            widgetContent: Image.file(File(saved), fit: BoxFit.contain),
-            buttonLabel: "Pick",
-            subButtonLabel: "Close",
-            buttonOnTap: () {
-              context.read<PredictionBloc>().add(PredictionInputChanged(File(saved)));
-              Navigator.of(ctx).pop();
-              Navigator.of(context).pop();
-            },
-            subButtonOnTap: () => Navigator.of(ctx).pop(),
-        )
-      );
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text("Capture Error"),
-          content: Text(e.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text("Close"),
-            ),
-          ],
+          title: 'Captured Image',
+          widgetContent: Image.file(File(saved), fit: BoxFit.contain),
+          buttonLabel: 'Pick',
+          subButtonLabel: 'Close',
+          buttonOnTap: () {
+            context
+                .read<PredictionBloc>()
+                .add(PredictionInputChanged(File(saved)));
+            Navigator.of(ctx).pop();
+            Navigator.of(context).pop();
+          },
+          subButtonOnTap: () => Navigator.of(ctx).pop(),
         ),
       );
+    } catch (e) {
+      widget.onCameraError(e);
     }
-  }
-
-  @override
-  void dispose() {
-    // _controller.stop();
-    super.dispose();
   }
 }

@@ -101,13 +101,13 @@ class MoreScreen extends StatelessWidget {
         name: "Huy Tran",
         tag: "@huytran",
         avatarUrl: AssetsPath.imgSwinChop,
-        contactUrl: "https://t.me/hav",
+        contactUrl: "https://www.facebook.com/hoanganhvu03",
       ),
       ContactInfo(
         name: "Hoang Anh Vu",
         tag: "@hoanganhvu271",
         avatarUrl: AssetsPath.imgSwinChop,
-        contactUrl: "mailto:support@woodswin.ai",
+        contactUrl: "mailto:VuHA.B21CN795@stu.ptit.edu.vn",
       ),
     ];
 

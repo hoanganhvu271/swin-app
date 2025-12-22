@@ -6,6 +6,8 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -48,7 +50,11 @@ flutter {
 }
 
 dependencies {
-    // Thêm dòng này để bật hỗ trợ desugaring
+    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics-ndk")
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
 
     implementation("com.serenegiant:common:9.8.2")

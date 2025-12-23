@@ -270,18 +270,14 @@ class _UVCCtrlViewState extends State<UVCCtrlView> {
 
       final path = p.join(dir.path, 'uvc_capture_tmp.jpg');
 
-      final file = File(path);
-
-      if (await file.exists()) {
-        await file.delete();
-      }
-
       final saved = await widget.controller
           .capture(path)
           .timeout(const Duration(seconds: 3));
 
       if (!mounted) return;
 
+      final imageProvider = FileImage(File(saved));
+      await imageProvider.evict();
       showDialog(
         context: context,
         builder: (ctx) => DialogComponent(

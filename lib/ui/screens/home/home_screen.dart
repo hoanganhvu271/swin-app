@@ -60,7 +60,15 @@ class HomeScreen extends StatelessWidget {
                     Row(
                       spacing: 20,
                       children: [
-                        Image.asset(AssetsPath.imgBook, width: 100, height: 100),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            AssetsPath.imgBook,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         Expanded(
                           child: Column(
                             spacing: 8,

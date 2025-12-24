@@ -75,7 +75,7 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
 
   Future<Uint8List> _loadModelBytes(String? localFileName) async {
     final dir = await getApplicationDocumentsDirectory();
-    final localPath = p.join(dir.path, localFileName ?? 'best.onnx');
+    final localPath = p.join(dir.path, localFileName ?? 'big_yolo.onnx');
 
     final file = File(localPath);
     if (await file.exists()) {
@@ -83,7 +83,7 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
       return await file.readAsBytes();
     } else {
       print("vuha12: Loading model from assets");
-      final rawBytes = await rootBundle.load('assets/models/best.onnx');
+      final rawBytes = await rootBundle.load('assets/models/big_yolo.onnx');
       final modelBytes = rawBytes.buffer.asUint8List();
 
       return modelBytes;

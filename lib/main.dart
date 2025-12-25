@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:swin/l10n/generated/app_localizations.dart';
 import 'package:swin/locators/swin_locators.dart';
+import 'package:swin/performance/performance_test_screen.dart';
 import 'package:swin/ui/blocs/update/update_bloc.dart';
 import 'package:swin/ui/screens/main/main_screen.dart';
 
@@ -55,10 +56,11 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         AppLocalizations.delegate
       ],
-      home: BlocProvider(
-        create: (_) => UpdateBloc(),
-        child: MainScreen()
-      ),
+      // home: BlocProvider(
+      //   create: (_) => UpdateBloc(),
+      //   child: MainScreen()
+      // ),
+      home: PerformanceTestScreen()
     );
   }
 }

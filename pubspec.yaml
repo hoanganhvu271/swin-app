@@ -38,6 +38,7 @@ dependencies:
   http: ^1.6.0
   url_launcher: ^6.3.2
   syncfusion_flutter_pdfviewer: ^31.1.19
+  device_info_plus: ^11.0.0
   uvc_manager:
     path: D:\PTIT\DoAn\UVC4Flutter
 #    git:

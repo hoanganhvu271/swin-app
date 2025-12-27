@@ -18,6 +18,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       final history = await StorageUtils.getHistory();
       emit(state.copyWith(status: BaseStatus.success, history: history));
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: BaseStatus.failure));
     }
   }

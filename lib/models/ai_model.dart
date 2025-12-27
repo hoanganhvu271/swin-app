@@ -1,10 +1,13 @@
+import 'class_info.dart';
+
 class AiModel {
   final String name;
   final String path;
   final String dataset;
   final String description;
   final bool isDownloaded;
-  final List<String> classNames;
+  final List<ClassInfo> classInfos;
+
 
   const AiModel({
     required this.name,
@@ -12,7 +15,7 @@ class AiModel {
     required this.dataset,
     required this.description,
     this.isDownloaded = false,
-    required this.classNames,
+    required this.classInfos,
   });
 
   AiModel copyWith({
@@ -21,7 +24,7 @@ class AiModel {
     String? dataset,
     String? description,
     bool? isDownloaded,
-    List<String>? classNames,
+    List<ClassInfo>? classInfos,
   }) {
     return AiModel(
       name: name ?? this.name,
@@ -29,7 +32,7 @@ class AiModel {
       dataset: dataset ?? this.dataset,
       description: description ?? this.description,
       isDownloaded: isDownloaded ?? this.isDownloaded,
-      classNames: classNames ?? this.classNames,
+      classInfos: classInfos ?? this.classInfos,
     );
   }
 }

@@ -17,9 +17,7 @@ class WoodDetailBloc extends Bloc<WoodDetailEvent, WoodDetailState> {
     emit(state.copyWith(status: BaseStatus.loading));
 
     try {
-      int index = event.woodId + 1;
-      String id = "vn_26_${index.toString().padLeft(2, '0')}";
-      final result = await repo.getWoodById(id);
+      final result = await repo.getWoodById(event.woodId);
 
       if (result != null) {
         emit(state.copyWith(

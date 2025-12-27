@@ -1,11 +1,11 @@
 class PredictionResult {
   final String label;
-  final int index;
+  final String id;
   final double confidence;
 
   PredictionResult({
     required this.label,
-    required this.index,
+    required this.id,
     required this.confidence,
   });
 }

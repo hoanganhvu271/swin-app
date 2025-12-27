@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +22,6 @@ part 'prediction_state.dart';
 Future<List<double>> _isolatedPredictionTask(Map<String, dynamic> data) async {
   final File input = data['input'] as File;
   final Uint8List modelBytes = data['modelBytes'] as Uint8List;
-  final List<String> classNames = List<String>.from(data['classNames'] as List);
 
   final OnnxPredictor isolatedPredictor = OnnxPredictor();
 
@@ -97,8 +95,7 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
 
       final Map<String, dynamic> data = {
         'input': state.input!,
-        'modelBytes': modelBytes,
-        'classNames': state.selectedModel?.classNames ?? [],
+        'modelBytes': modelBytes
       };
 
       // Chạy trong isolate — init + predict
@@ -112,8 +109,8 @@ class PredictionBloc extends Bloc<PredictionEvent, PredictionState>{
 
       for (int i = 0; i < result.length; i++) {
         predictions.add(PredictionResult(
-          label: state.selectedModel?.classNames[i] ?? "Unknown",
-          index: i,
+          label: state.selectedModel?.classInfos[i].name ?? "Unknown",
+          id: state.selectedModel?.classInfos[i].id ?? "vn100",
           confidence: result[i],
         ));
       }

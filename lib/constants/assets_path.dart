@@ -19,6 +19,7 @@ abstract class AssetsPath {
   static const String imgLeaf5 = 'assets/images/img_leaf_5.png';
   static const String imgLeaf6 = 'assets/images/img_leaf_6.png';
   static const String imgLeaf36 = 'assets/images/img_leaf_36.png';
+  static const String imgNotFound = 'assets/images/img_notfound.png';
   static const String imgTest = 'assets/images/test_image.png';
   static const String imgTree = 'assets/images/img_tree.png';
   static const String imgVietNamWood = 'assets/images/img_vietnam_wood.jpg';

@@ -39,7 +39,7 @@ class StorageUtils {
       'imgPath': newFilePath,
       'result': obj.result.map((r) => {
         'label': r.label,
-        'index': r.index,
+        'id': r.id,
         'confidence': r.confidence,
       }).toList(),
       'timestamp': obj.timestamp,
@@ -64,7 +64,7 @@ class StorageUtils {
         imgPath: map['imgPath'],
         result: (map['result'] as List).map((r) => PredictionResult(
           label: r['label'],
-          index: r['index'],
+          id: r['id'],
           confidence: (r['confidence'] as num).toDouble(),
         )).toList(),
         timestamp: map['timestamp'] ?? '',

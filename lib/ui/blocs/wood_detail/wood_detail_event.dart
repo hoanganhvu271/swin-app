@@ -1,7 +1,7 @@
 class WoodDetailEvent {}
 
 class GetWoodById extends WoodDetailEvent {
-  final int woodId;
+  final String woodId;
 
   GetWoodById(this.woodId);
 }

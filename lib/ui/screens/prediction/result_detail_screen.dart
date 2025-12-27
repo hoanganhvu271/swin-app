@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swin/constants/assets_path.dart';
 import 'package:swin/constants/base_status.dart';
 import 'package:swin/constants/colors_lib.dart';
 import 'package:swin/l10n/generated/app_localizations.dart';
@@ -34,7 +35,7 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
   @override
   void initState() {
     super.initState();
-    context.read<WoodDetailBloc>().add(GetWoodById(widget.result.index));
+    context.read<WoodDetailBloc>().add(GetWoodById(widget.result.id));
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 600),
@@ -70,7 +71,7 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SwinTopBar(
-                title: "Prediction Result",
+                title: "Kết quả chi tiết",
                 iconRightPath: "assets/icons/icon_setting.svg",
                 iconRightOnTap: () {},
               ),
@@ -80,10 +81,7 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _scaleAnim.value,
-                    child: Opacity(
-                      opacity: _fadeAnim.value,
-                      child: child,
-                    ),
+                    child: Opacity(opacity: _fadeAnim.value, child: child),
                   );
                 },
                 child: Container(
@@ -167,7 +165,17 @@ class _ResultDetailScreenState extends State<ResultDetailScreen>
                           if (state.status == BaseStatus.loading) {
                             return const Center(child: CircularProgressIndicator());
                           } else if (state.status == BaseStatus.failure) {
-                            return Center(child: Text("Error: ${state.error}"));
+
+                            return Center(child: Column(
+                              children: [
+                                Image.asset(AssetsPath.imgNotFound, width: 150, height: 150),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Chưa có thông tin về loại gỗ này.',
+                                  style: TextDimensions.body17,
+                                ),
+                              ],
+                            ));
                           }
                           return Html(data: state.woodPiece?.description ?? "");
                         }

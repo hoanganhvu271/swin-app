@@ -11,7 +11,6 @@
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-[Tiếng Việt](#) | [English](#english)
 
 </div>
 
@@ -25,10 +24,6 @@
 - [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Cài đặt](#-cài-đặt)
 - [Cấu trúc dự án](#-cấu-trúc-dự-án)
-- [API Documentation](#-api-documentation)
-- [Đóng góp](#-đóng-góp)
-- [Giấy phép](#-giấy-phép)
-
 ---
 
 ## 🌟 Giới thiệu

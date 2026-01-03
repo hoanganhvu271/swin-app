@@ -61,12 +61,6 @@
 - Lưu trữ các kết quả nhận diện
 - Xem lại và so sánh kết quả
 
-### ⚙Quản lý Model AI
-- Chọn và tải các phiên bản model khác nhau
-- Cập nhật model mới từ server
-
----
-
 ## Công nghệ sử dụng
 
 ### Mobile App (Flutter)
@@ -150,7 +144,7 @@ flutter build ios --release
 
 ```
 woodswin/
-├── 📱 lib/                          # Flutter source code
+├── lib/                          # Flutter source code
 │   ├── constants/                   # Colors, dimensions, assets
 │   ├── l10n/                        # Localization (vi, en)
 │   ├── locators/                    # Dependency injection

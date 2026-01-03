@@ -16,17 +16,15 @@
 
 ---
 
-## 📋 Mục lục
+## Mục lục
 
 - [Giới thiệu](#-giới-thiệu)
 - [Tính năng](#-tính-năng)
-- [Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
-- [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Cài đặt](#-cài-đặt)
 - [Cấu trúc dự án](#-cấu-trúc-dự-án)
 ---
 
-## 🌟 Giới thiệu
+## Giới thiệu
 
 **WoodSwin** là ứng dụng nhận diện gỗ thông minh, sử dụng mô hình học sâu **FA-Net** kết hợp **YOLOv11** để phân tích đặc trưng vân gỗ và cấu trúc bề mặt từ hình ảnh.
 
@@ -34,70 +32,42 @@
 
 ### Đặc điểm nổi bật
 
-- 🔍 **Nhận diện chính xác** - Sử dụng mô hình FA-Net với độ chính xác cao
-- 📷 **Hỗ trợ UVC Camera** - Kết nối với kính hiển vi USB để phân tích chi tiết vân gỗ
-- 📚 **Thư viện gỗ phong phú** - Cơ sở dữ liệu đa dạng các loại gỗ Việt Nam
-- 🌐 **Đa ngôn ngữ** - Hỗ trợ Tiếng Việt và Tiếng Anh
-- 📱 **Đa nền tảng** - Chạy trên Android, iOS và Web
+- **Nhận diện chính xác** - Sử dụng mô hình FA-Net với độ chính xác cao
+- **Hỗ trợ UVC Camera** - Kết nối với kính hiển vi USB để phân tích chi tiết vân gỗ
+- **Thư viện gỗ phong phú** - Cơ sở dữ liệu đa dạng các loại gỗ Việt Nam
+- **Đa ngôn ngữ** - Hỗ trợ Tiếng Việt và Tiếng Anh
+- **Đa nền tảng** - Chạy trên Android, iOS và Web
 
 ---
 
-## ✨ Tính năng
+## Tính năng
 
-### 📸 Nhận diện gỗ
+### Nhận diện gỗ
 - Chụp ảnh hoặc chọn từ thư viện
 - Phân tích và dự đoán loài gỗ với độ tin cậy
 - Hiển thị top kết quả dự đoán
 
-### 🔬 Kết nối UVC Camera
+### Kết nối UVC Camera
 - Hỗ trợ kính hiển vi USB (UVC Camera)
 - Chụp ảnh trực tiếp từ camera kết nối
 - Xem trước video realtime
 
-### 📖 Thư viện gỗ
+### Thư viện gỗ
 - Tra cứu thông tin chi tiết các loại gỗ
 - Hình ảnh mẫu chất lượng cao
 - Mô tả đặc điểm, công dụng
 
-### 📜 Lịch sử dự đoán
+### Lịch sử dự đoán
 - Lưu trữ các kết quả nhận diện
 - Xem lại và so sánh kết quả
 
-### ⚙️ Quản lý Model AI
+### ⚙Quản lý Model AI
 - Chọn và tải các phiên bản model khác nhau
 - Cập nhật model mới từ server
 
 ---
 
-## 🏗 Kiến trúc hệ thống
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    WOODSWIN ARCHITECTURE                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
-│  │   Flutter   │    │   Go API    │    │  Firebase   │     │
-│  │   Mobile    │◄──►│   Backend   │◄──►│  Firestore  │     │
-│  │     App     │    │             │    │             │     │
-│  └──────┬──────┘    └──────┬──────┘    └─────────────┘     │
-│         │                  │                               │
-│         │                  │           ┌─────────────┐     │
-│         │                  └──────────►│ Cloudinary  │     │
-│         │                              │   Storage   │     │
-│         ▼                              └─────────────┘     │
-│  ┌─────────────┐                                           │
-│  │    ONNX     │                                           │
-│  │   Runtime   │                                           │
-│  │  (FA-Net)   │                                           │
-│  └─────────────┘                                           │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🛠 Công nghệ sử dụng
+## Công nghệ sử dụng
 
 ### Mobile App (Flutter)
 | Công nghệ | Mô tả |
@@ -133,7 +103,7 @@
 
 ---
 
-## 📥 Cài đặt
+## Cài đặt
 
 ### Yêu cầu
 
@@ -176,7 +146,7 @@ flutter build apk --release
 flutter build ios --release
 ```
 
-## 📁 Cấu trúc dự án
+## Cấu trúc dự án
 
 ```
 woodswin/
@@ -203,33 +173,9 @@ woodswin/
 │   ├── firebase_options.dart        # Firebase config
 │   ├── onnx_predictor.dart          # ONNX inference
 │   └── main.dart                    # Entry point
-│
-├── 🖥️ backend/                       # Go backend
-│   ├── config/                      # Firebase, Cloudinary config
-│   ├── firestore/                   # Firestore operations
-│   ├── handler/                     # HTTP handlers
-│   ├── middleware/                  # Auth middleware
-│   ├── models/                      # Data models
-│   ├── router/                      # API routes
-│   ├── service/                     # Business logic
-│   └── main.go                      # Entry point
-│
-├── 📦 assets/
-│   ├── icons/                       # App icons
-│   ├── images/                      # Images
-│   ├── models/                      # ONNX models
-│   └── pdfs/                        # Documents
-│
-├── 🌐 web/                          # Flutter web
-├── 🤖 android/                      # Android native
-├── 🍎 ios/                          # iOS native
-│
-├── pubspec.yaml                     # Flutter dependencies
-├── go.mod                           # Go dependencies
-└── README.md                        # Documentation
 ```
 
-## 🔧 Cấu hình
+## Cấu hình
 
 ### Firebase
 
